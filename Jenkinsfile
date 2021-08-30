@@ -16,6 +16,7 @@ pipeline {
             /kaniko/executor --dockerfile `pwd`/Dockerfile \
                              --context `pwd` \
                              --destination=itsshashank/gin-sample:${BUILD_NUMBER}
+                             --force
             '''
           }
         }
