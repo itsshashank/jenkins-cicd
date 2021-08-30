@@ -13,10 +13,9 @@ pipeline {
         container('kaniko') {
           script {
             sh '''
-            /kaniko/executor --dockerfile `pwd`/Dockerfile \
+            /kaniko/executor --force --dockerfile `pwd`/Dockerfile \
                              --context `pwd` \
                              --destination=itsshashank/gin-sample:${BUILD_NUMBER}
-                             --force
             '''
           }
         }
