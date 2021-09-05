@@ -6,28 +6,17 @@ pipeline {
     }
   }
 
-  stages {
-
-    // stage('Kaniko Build & Push Image') {
-    //   steps {
-    //     container('kaniko') {
-    //       script {
-    //         sh '''
-    //         /kaniko/executor --force --dockerfile `pwd`/Dockerfile \
-    //                          --context `pwd` \
-    //                          --destination=itsshashank/gin-sample:${BUILD_NUMBER}
-    //         '''
-    //       }
-    //     }
-    //   }
-    // }
-
+  node {
     stage('List pods') {
-    withKubeConfig([credentialsId: 'mykubeconfig'
-                    ]) {
-      sh 'kubectl get pods'
+      withKubeConfig([credentialsId: '<credential-id>',
+                      caCertificate: '<ca-certificate>',
+                      serverUrl: '<api-server-address>',
+                      contextName: '<context-name>',
+                      clusterName: '<cluster-name>',
+                      namespace: '<namespace>'
+                      ]) {
+        sh 'kubectl get pods'
+      }
     }
-  }
-  
   }
 }
