@@ -25,9 +25,8 @@ pipeline {
     stage('Deploy App to Kubernetes') {     
       steps {
         container('kubectl') {
-          withCredentials([file(credentialsId: 'mykubeconfig', variable: 'KUBECONFIG', 'serverUrl': 'http://172.20.0.2')]) {
+          withCredentials([file(credentialsId: 'mykubeconfig', variable: 'KUBECONFIG']) {
             sh 'sed -i "s/<TAG>/${BUILD_NUMBER}/" deploy.yaml'
-            sh 'kubectl config set-cluster mylocal '
             sh 'kubectl get all -o wide'
             // sh 'kubectl apply -f deploy.yaml'
           }
