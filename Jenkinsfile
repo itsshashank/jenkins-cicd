@@ -8,14 +8,9 @@ pipeline {
 
   node {
     stage('List pods') {
-      withKubeConfig([credentialsId: '<credential-id>',
-                      caCertificate: '<ca-certificate>',
-                      serverUrl: '<api-server-address>',
-                      contextName: '<context-name>',
-                      clusterName: '<cluster-name>',
-                      namespace: '<namespace>'
+      withKubeConfig([credentialsId: 'mykubeconfig'
                       ]) {
-        sh 'kubectl get pods'
+        sh 'kubectl get all'
       }
     }
   }
