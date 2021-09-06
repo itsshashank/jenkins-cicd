@@ -8,8 +8,8 @@ pipeline {
 
   node {
     stage('List pods') {
-      withKubeConfig([credentialsId: 'mykubeconfig'
-                      ]) {
+      withKubeConfig([credentialsId: 'mykubeconfig', variable: 'KUBECONFIG']) {
+        sh 'cat $KUBECONFIG > ~/.kube/config'
         sh 'kubectl get all'
       }
     }
