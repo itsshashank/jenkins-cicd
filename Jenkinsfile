@@ -6,12 +6,18 @@ pipeline {
     }
   }
 
-  node {
-    stage('List pods') {
-      withKubeConfig([credentialsId: 'mykubeconfig', variable: 'KUBECONFIG']) {
-        sh 'cat $KUBECONFIG > ~/.kube/config'
-        sh 'kubectl get all'
+  stages {
+    stage('Deploy App to Kubernetes') {     
+      steps {
+        container('kubectl') {
+          withCredentials([file(credentialsId: 'mykubeconfig', variable: 'KUBECONFIG')]) {
+            sh 'cat $KUBECONFIG > ./kube/config'
+            // sh 'sed -i "s/<TAG>/${BUILD_NUMBER}/" deploy.yaml'
+            sh 'kubectl get all'
+          }
+        }
       }
     }
+  
   }
 }
