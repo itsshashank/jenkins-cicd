@@ -7,27 +7,14 @@ pipeline {
   }
 
   stages {
-
-    stage('Kaniko Build & Push Image') {
-      steps {
-        container('kaniko') {
-          script {
-            sh '''
-            /kaniko/executor --force --dockerfile `pwd`/Dockerfile \
-                             --context `pwd` \
-                             --destination=itsshashank/gin-sample:${BUILD_NUMBER}
-            '''
-          }
-        }
-      }
-    }
-
     stage('Deploy App to Kubernetes') {     
       steps {
         container('kubectl') {
           withCredentials([file(credentialsId: 'mykubeconfig', variable: 'KUBECONFIG')]) {
-            sh 'sed -i "s/<TAG>/${BUILD_NUMBER}/" deploy.yaml'
-            sh 'kubectl apply -f deploy.yaml'
+            sh 'mkdir .kube'
+            sh 'cat $KUBECONFIG > .kube/config'
+            // sh 'sed -i "s/<TAG>/${BUILD_NUMBER}/" deploy.yaml'
+            sh 'kubectl get all'
           }
         }
       }
